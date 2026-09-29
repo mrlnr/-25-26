@@ -1,0 +1,295 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
+
+\usepackage{enumitem} % для лучшего контроля над списками
+
+\title{\textbf{Лекция 8: Непрерывная зависимость от параметра и гладкость данных}}
+\date{}
+
+\begin{document}
+
+\maketitle
+Рассмотрим задачу Коши для системы:
+\begin{equation}
+    \begin{cases}
+        \dfrac{dy}{dt} = f(t, y(t, \mu), \mu) \quad (1), \quad y(t, \mu) \text{ — вектор-функция}, \quad f \text{ — вектор-функция} \\
+        y(t_0) = y_0 \quad (2), \quad \mu \in \mathbb{R}^k
+    \end{cases}
+\end{equation}
+
+Пусть $ \mathcal{D}\subseteq \mathbb{R}^{n+k+1}$ — область.
+
+Фиксируем $\mu = \mu_0$, пусть $(t_0, y_0, \mu_0) \in \mathcal{D}$.
+
+\section{Теорема (о непрерывной зависимости от параметра)}
+\begin{enumerate}[label=\arabic*)]
+    \item Если \( f \in C(D) \) и \( \dfrac{\partial f_i}{\partial y_j} \in C(\mathcal{D}) \), то для точки \( (t_0, y_0, \mu_0) \in \mathcal{D} \)
+    \[
+        \exists h > 0,\ \delta > 0,
+    \]
+    такое что решение задачи Коши (1), (2) существует, единственно и  непрерывно по совокупности переменных в некоторой окрестности 
+    \[
+        |t - t_0| \leq h,\quad |\mu - \mu_0| \leq \delta.
+    \]
+\end{enumerate}
+
+\subsection*{Идея доказательства}
+\begin{enumerate}[label=\arabic*)]
+    \item Для каждого $\mu$ $\exists!$ решение задачи Коши по следствию из теоремы Пикара.
+    \item Последовательные: 
+    \[
+        y_1^{[0]} = y_0; \quad y_i^{[k]} = y_{0,i} + \int_{t_0}^t f_i(s, y^{[k-1]}, \mu) \, ds
+    \]
+    Интегралы в последовательных приближениях зависят от параметров $\mu_1, \dots, \mu_k$. Если подынтегральная функция непрерывна по совокупности переменных, то интеграл тоже непрерывен.
+    \item Последовательность сходится равномерно {на отрезке $|t-t_0|\le h$ для всякого фиксированного $\mu$} к решению задачи Коши, и предельная функция непрерывна по совокупности переменных.
+\end{enumerate}
+
+\hrule
+\vspace{0.5cm}
+
+Пусть вместо параметров $\mu_1, \dots, \mu_k$ заданы начальные данные 
+\[
+    y_1^0, y_2^0, \dots, y_n^0,
+\]
+\[
+    y = y(t, y_1^0, \dots, y_n^0) \Rightarrow \text{Теорема 1 справедлива.}
+\]
+
+\section{Теорема о дифференцируемой зависимости от параметра}
+Если:
+\begin{enumerate}[label=\arabic*)]
+    \item $f \in C(\mathcal{D})$
+    \item $\dfrac{\partial f_i}{\partial y_j} \in C(\mathcal{D})$
+    \item $\dfrac{\partial f_i}{\partial \mu_l} \in C(\mathcal{D})$
+    \item $\dfrac{\partial a_i}{\partial \mu_l} \in C(\mathcal{M})$
+\end{enumerate}
+то $\exists \, \dfrac{\partial y}{\partial \mu_l} \in C(\mathcal{D})$ и $v_l(t, \mu) = \dfrac{\partial y}{\partial \mu_l}$ является решением задачи:
+\[
+    \frac{\partial}{\partial t} \left( \frac{\partial y}{\partial \mu_l} \right) = \frac{\partial f}{\partial y} \cdot \frac{\partial y}{\partial \mu_l} + \frac{\partial f}{\partial \mu_l},
+\]
+\[
+    \frac{\partial v_l}{\partial t} = \frac{\partial f}{\partial y} \, v_l + \frac{\partial f}{\partial \mu_l}.
+\]
+Начальные условия:
+\[
+    \left. \frac{\partial y}{\partial \mu_l} \right|_{t = t_0} = \frac{\partial a}{\partial \mu_l} = v_l(t_0, \mu),
+\]
+при этом
+\[
+    \frac{\partial^2 y}{\partial t \partial \mu_l} = \frac{\partial^2 y}{\partial \mu_l \partial t}.
+\]
+
+\subsection*{Доказательство}
+Непрерывность $\frac{\partial y}{\partial \mu}$ следует из того, что $u(t,\mu)$ удовлетворяет линейному уравнению с непрерывными коэффициентами и непрерывным начальным условием, а значит, непрерывна по $(t,\mu)$.
+
+\[
+    \frac{\partial y}{\partial \mu} = \lim_{\tilde{\mu} \to \mu} \frac{\tilde{y} - y}{\tilde{\mu} - \mu} := u(t, \mu),  \qquad
+    \mu \in \mathbb{R}
+\]
+
+$\tilde{y}$ — решение задачи Коши 
+\[
+    \begin{cases} 
+        \frac{d\tilde{y}}{dt} = f(t, \tilde{y}, \tilde{\mu}) \\ 
+        \tilde{y}(t_0) = a(\tilde{\mu}) 
+    \end{cases}
+\]
+
+\[
+    \frac{\partial u}{\partial t} = \frac{\dot{\tilde{y}} - \dot{y}}{\tilde{\mu} - \mu} = \frac{f(t, \tilde{y}, \tilde{\mu}) - f(t, y, \mu)}{\tilde{\mu} - \mu} \quad (*) \text{ при } \mu \neq \tilde{\mu}
+\]
+
+Введём обозначения:
+\[
+    \begin{aligned} 
+        y^* &= y + s(\tilde{y} - y) \\ 
+        \mu^* &= \mu + s(\tilde{\mu} - \mu) 
+    \end{aligned}
+\]
+
+\[
+    F(s) = f(t, y^*, \mu^*)
+\]
+\[
+    F(0) = f(t, y, \mu) \qquad (*) = F(1) - F(0) = \int_0^1 F'(s) \, ds
+\]
+\[
+    F(1) = f(t, \tilde{y}, \tilde{\mu})
+\]
+
+\[
+    F'(s) = \frac{d}{ds} \begin{pmatrix} f_1(t, y^*, \mu^*) \\ \vdots \\ f_n(t, y^*, \mu^*) \end{pmatrix}
+\]
+Имеем для каждой компоненты $i = 1,\dots,n$:
+\[
+    \frac{d}{ds} f_i(t, y^*, \mu^*) = \sum_{j=1}^n \frac{\partial f_i}{\partial y_j^*} (\tilde{y}_j - y_j) + \frac{\partial f_i}{\partial \mu^*} (\tilde{\mu} - \mu)
+\]
+Сумма $\sum_{j=1}^n \frac{\partial f_i}{\partial y_j^*} (\tilde{y}_j - y_j)$ есть $i$-я компонента произведения матрицы Якоби $\frac{\partial f}{\partial y^*}$ на вектор $(\tilde{y} - y)$:
+\[
+\sum_{j=1}^n \frac{\partial f_i}{\partial y_j^*} (\tilde{y}_j - y_j) = \left( \frac{\partial f}{\partial y^*} (\tilde{y} - y) \right)_i.
+\]
+Слагаемое $\frac{\partial f_i}{\partial \mu^*} (\tilde{\mu} - \mu)$ есть $i$-я компонента вектора $\frac{\partial f}{\partial \mu^*} (\tilde{\mu} - \mu)$, где 
+$\frac{\partial f}{\partial \mu^*} = \left( \frac{\partial f_1}{\partial \mu^*}, \dots, \frac{\partial f_n}{\partial \mu^*} \right)^T$.
+Записывая все $n$ уравнений в векторной форме, получаем:
+\[
+\frac{d}{ds} \begin{pmatrix} f_1 \\ \vdots \\ f_n \end{pmatrix}
+= \begin{pmatrix}
+\left( \frac{\partial f}{\partial y^*} (\tilde{y} - y) \right)_1 \\ \vdots \\ \left( \frac{\partial f}{\partial y^*} (\tilde{y} - y) \right)_n
+\end{pmatrix}
++ \begin{pmatrix}
+\frac{\partial f_1}{\partial \mu^*} (\tilde{\mu} - \mu) \\ \vdots \\ \frac{\partial f_n}{\partial \mu^*} (\tilde{\mu} - \mu)
+\end{pmatrix}.
+\]
+Вынося общие множители, приходим к записи:
+
+\[
+    \frac{d}{ds} f(t, y^*, \mu^*) = \frac{\partial f}{\partial y^*} (\tilde{y} - y) + \frac{\partial f}{\partial \mu^*} (\tilde{\mu} - \mu)
+\]
+
+\[
+    (*) = \int_0^1 \left( \frac{\partial f}{\partial y^*} (\tilde{y} - y) + \frac{\partial f}{\partial \mu^*} (\tilde{\mu} - \mu) \right) \, ds 
+    = \left( \int_0^1 \frac{\partial f}{\partial y^*} \, ds \right) (\tilde{y} - y) + \left( \int_0^1 \frac{\partial f}{\partial \mu^*} \, ds \right) (\tilde{\mu} - \mu)
+\]
+($\mu \neq \tilde{\mu}$)
+
+\[
+    \frac{\partial u}{\partial t} = \left( \int_0^1 \frac{\partial f}{\partial y^*} \, ds \right) \underbrace{\left( \frac{\tilde{y} - y}{\tilde{\mu} - \mu} \right)}_{=u} + \int_0^1 \frac{\partial f}{\partial \mu^*} \, ds = H(t, \tilde{\mu}) \cdot u + h(t, \tilde{\mu}) \text{ — сист. ЛОДУ}
+\]
+
+\[
+    u(t_0, \mu) = \frac{a(\tilde{\mu}) - a(\mu)}{\tilde{\mu} - \mu} \text{ — нач. условия}
+\]
+
+Для $\mu = \tilde{\mu}$ доопределим $u$ как реш. з. Коши:
+\[
+    \frac{\partial u}{\partial t} = H(t, \mu) u + h(t, \mu)
+\]
+\[
+    u(t_0) = a'(\mu) \text{ (перешли к пределу } \tilde{\mu} \to \mu)
+\]
+
+$\frac{\partial f}{\partial y^*}$ и $\frac{\partial f}{\partial \mu^*}$ не зависят от $s$:
+\[
+    \frac{\partial u}{\partial t} = \frac{\partial f}{\partial y} \cdot u + \frac{\partial f}{\partial \mu} \text{ — сист. ЛОДУ}
+\]
+
+Начальные условия:
+\[
+    u(t_0) = a'(\mu)
+\]
+
+\[
+    \lim_{\tilde{\mu} \to \mu} \frac{\partial u}{\partial t} = \frac{\partial f}{\partial y} \frac{\partial y}{\partial \mu} + \frac{\partial f}{\partial \mu} = \frac{\partial}{\partial t}\left(\frac{\partial y}{\partial \mu}\right)
+\]
+
+\[
+    \lim_{\tilde{\mu} \to \mu} u(t_0) = \left. \frac{\partial y}{\partial \mu} \right|_{t=t_0} = a'(\mu)
+\]
+
+Покажем, что $\frac{\partial^2 y}{\partial t \partial \mu} = \frac{\partial^2 y}{\partial \mu \partial t} \in C$:
+
+\[
+    \frac{\partial y}{\partial t} \underset{\text{непр.}}{\equiv} f(t, y, \mu) \implies \exists \frac{\partial^2 y}{\partial t \partial \mu} \in C
+\]
+
+\[
+    \frac{\partial^2 y}{\partial \mu \partial t} = \frac{\partial f}{\partial y} \frac{\partial y}{\partial \mu} + \frac{\partial f}{\partial \mu}, \quad \left. \frac{\partial y}{\partial \mu} \right|_{t=t_0} = a'(\mu)
+\]
+
+В силу единственности решения задачи Коши:
+\[
+    \frac{\partial^2 y}{\partial t \partial \mu} = \frac{\partial^2 y}{\partial \mu \partial t}
+\]
+
+\section{Теорема о дифференцируемой зависимости от начальных данных}
+Пусть:
+\begin{enumerate}[label=\arabic*)]
+    \item $f \in C(\mathcal{D})$
+    \item $\dfrac{\partial f_i}{\partial y_j} \in C(D)$
+\end{enumerate}
+тогда $\exists \, \dfrac{\partial y}{\partial y_i^0} \in C(\mathcal{D})$ и оно удовлетворяет задаче Коши:
+\[
+    \frac{\partial}{\partial t} \left( \frac{\partial y}{\partial y_i^0} \right) = \frac{\partial f}{\partial y} \cdot \frac{\partial y}{\partial y_i^0}, \quad \left. \frac{\partial y}{\partial y_i^0} \right|_{t=t_0} = \begin{pmatrix} 0 \\ \dots \\ j \\ \dots \\ 0 \end{pmatrix} \text.
+\]
+При этом $\exists \, \dfrac{\partial^2 y}{\partial y_i^0 \partial t} \in C(D)$ и $\dfrac{\partial^2 y}{\partial y_i^0 \partial t} = \dfrac{\partial^2 y}{\partial t \partial y_i^0}$.
+
+\subsection*{Пример}
+\[
+    \begin{cases}
+        y' = 2ty + \sin y \\
+        y(1) = y_0
+    \end{cases}
+\]
+Найти $\left. \dfrac{\partial y}{\partial y_0} \right|_{y_0 = 0}$, \quad $y = y(t, y_0)$.
+
+Фиксируем $y_0 = 0$ и находим $\left. y \right|_{y_0 = 0}$:
+\[
+    \begin{cases}
+        y' = 2ty + \sin y \\
+        y(1) = 0
+    \end{cases}
+    \Rightarrow \quad y \equiv 0 \text{ — решение задачи Коши}.
+\]
+Других решений нет в силу единственности решения задачи Коши (правая часть $f(t,y)=2ty+\sin y$ имеет непрерывную производную по $y$, что гарантирует единственность).
+\[
+    \frac{\partial}{\partial y_0} \left( \frac{dy}{dt} \right) = 2t \frac{\partial y}{\partial y_0} + \cos y \cdot \frac{\partial y}{\partial y_0}
+\]
+\[
+    \left. \frac{\partial y}{\partial y_0} \right|_{t=1} = 1
+\]
+
+Пусть $v = \left. \dfrac{\partial y}{\partial y_0} \right|_{y_0 = 0}$:
+\[
+    \begin{cases}
+        \dfrac{dv}{dt} = 2tv + v = (2t + 1)v \\[8pt]
+        v(1) = 1
+    \end{cases}
+\]
+\[
+    v = C e^{t^2 + t}
+\]
+\[
+    v = e^{t^2 + t - 2}
+\]
+\[
+    \left. \frac{\partial y}{\partial y_0} \right|_{y_0 = 0} = e^{t^2 + t - 2}.
+\]
+
+\section{Теорема}
+Если $f (t, y, \mu)\in C^p(\mathcal{D})$ и $a(\mu) \in C^p(\mathcal{M})$, решение з. Коши (3),(4) существует, единственно и имеет непрерывные производные до порядка $p+1$ включительно.
+
+\subsection*{Идея доказательства}
+Доказательство проводится рекуррентно с использованием предыдущей теоремы о дифференцируемой зависимости от начальных данных. На каждом шаге показывается, что если $f$ и $a(\mu)$ имеют производные до порядка $k$ включительно, то решение $y(t,\mu)$ имеет производные до порядка $k+1$. Переход от $k$ к $k+1$ осуществляется дифференцированием уравнения по параметру $\mu$ и применением теоремы о непрерывной зависимости решения линейной системы от параметра.
+
+\vspace{1em}
+\noindent Рассмотрим систему:
+\[
+    \begin{cases} 
+        \dfrac{dy}{dt} = f(t, y) & (5) \\ 
+        y(t_0) = y_0 & (6) 
+    \end{cases} \quad y, f - \text{ вектор-функции}
+\]
+
+\section{Теорема о степени гладкости решения}
+Если в системе (5) все $f \in C^p(\mathcal{G})$, $p \ge 1$, то решение з. Коши (5), (6) имеет непрерывные производные до порядка $p+1$ включительно.
+\subsection*{Доказательство (схема)}
+
+Индукция по $p$:
+
+\medskip
+$p = 1$: $f \in C^1 \Rightarrow y' = f(t,y) \in C \Rightarrow y \in C^1$. 
+Далее $y'' = f_t + f_y \cdot y' \in C \Rightarrow y \in C^2$.
+
+\medskip
+$p = 2$: $f \in C^2 \Rightarrow y \in C^2$, 
+$y'' = f_t + f_y \cdot y' \in C^1 \Rightarrow y \in C^3$.
+
+\medskip
+И так далее: $f \in C^p \Rightarrow y \in C^{p+1}$.
+
+\end{document}
+\end{document}
